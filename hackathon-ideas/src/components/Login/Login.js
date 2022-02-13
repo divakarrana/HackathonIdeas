@@ -11,66 +11,63 @@ const theme = createTheme();
 const Img = styled.img`
     height: 200px;
 `
-export default function Login() {
+export default function Login(props) {
+
+    const [error, setError] = React.useState({error: false, helperText: ''});
 
     const history = useHistory();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        let empList = JSON.parse(localStorage.getItem('empList'));
         let empId = data.get('empId');
-        if(empList.indexOf(empId) !== -1){
-            localStorage.setItem("empId", data.get('empId'));
+        if(props.employeeList.indexOf(empId) !== -1){
             localStorage.setItem("isAuthorized", "true");
+            localStorage.setItem("empId", data.get('empId'));
             history.push('/');
         } else {
-            alert('Id not found');
+            setError({error: true, helperText: 'Incorrect Employee Id'});
         }
     };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <Img src={logo} alt='logo' />
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.dark' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="empId"
-              label="Employee Id"
-              name="empId"
-              autoComplete="empId"
-              autoFocus
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <Img src={logo} alt='logo' />
+                <CssBaseline />
+                <Box sx={{
+                        marginTop: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',}}>
+                    <Avatar sx={{ m: 1, bgcolor: 'primary.dark' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <TextField
+                        margin="normal"
+                        {...error}
+                        required
+                        fullWidth
+                        id="empId"
+                        label="Employee Id"
+                        name="empId"
+                        autoComplete="empId"
+                        autoFocus
+                        />
+                        <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}>
+                        Sign In
+                        </Button>
+                    </Box>
+                </Box>
+            </Container>
+        </ThemeProvider>
+    );
 }
