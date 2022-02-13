@@ -1,16 +1,3 @@
-# HackathonIdeas
-Web application that allows employees to submit hack-a-thon idea of the month.
-Dashboard features all the submitted ideas by employees.
-Employees can upvote the idea of their interest.
-Dashboard ideas can be sorted based on the dates as well as votes.
-
-# Setup guidelines
-1. Clone the repository using `git clone` followed by the repo url.
-2. Navigate to the folder where this repo is cloned.
-3. Do `npm install`, this will download all the dependencies of the project.
-4. Run `npm start`, this will bootstrap a local server and application will start on local port.
-5. To get a production ready build you can hit 
-
 # Getting started with Hackathon Ideas Application
 
 ## Intro
