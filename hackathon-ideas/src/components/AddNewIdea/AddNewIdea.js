@@ -18,6 +18,7 @@ export default function AddNewIdea(props) {
 
     const [tags, setTag] = useState('');
     const [months, setMonth] = useState('');
+    const [error, setError] = useState({errorTitle: false, errorDesc:false, errorTags:false, errorMonth:false, helperText: ''});
     const monthsList = props.monthsList;
     let idGen = props.idGen;
 
@@ -25,11 +26,20 @@ export default function AddNewIdea(props) {
 
     const handleIdeaSubmission = (e) => {
         e.preventDefault();
-        history.push('/');
         const data = new FormData(e.currentTarget);
-        let newIdea = {id:idGen, title: data.get('title'), des: data.get('desc'), tag: data.get('tagsLabelId'), votes: 0, month: data.get('monthsLabelId'), createdBy: localStorage.getItem('empId'), votedBy: [], createdDate: new Date().toDateString()};
-        props.updateIdeasList(newIdea);
-        
+        if(!data.get('title')){
+            setError({...error, errorTitle: true, helperText: "Required field"});
+        } else if(!data.get("desc")){
+            setError({...error, errorDesc: true, helperText: "Required field"});
+        }  else if(!data.get("tagsLabelId")){
+            setError({...error, errorTags: true, helperText: ""});
+        } else if(!data.get("monthsLabelId")) {
+            setError({...error, errorMonth: true, helperText: ""});
+        } else {
+            history.push('/');
+            let newIdea = {id:idGen, title: data.get('title'), des: data.get('desc'), tag: data.get('tagsLabelId'), votes: 0, month: data.get('monthsLabelId'), createdBy: localStorage.getItem('empId'), votedBy: [], createdDate: new Date().toDateString()};
+            props.updateIdeasList(newIdea);
+        }
     }
 
     const handleChange = (e) => {
@@ -52,6 +62,8 @@ export default function AddNewIdea(props) {
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <TextField
+                                error={error.errorTitle}
+                                helperText={error.helperText}
                                 required
                                 id="title"
                                 name="title"
@@ -63,6 +75,8 @@ export default function AddNewIdea(props) {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    error={error.errorDesc}
+                                    helperText={error.helperText}
                                     required
                                     id="desc"
                                     name="desc"
@@ -76,6 +90,7 @@ export default function AddNewIdea(props) {
                                 <FormControl fullWidth>
                                     <InputLabel id="tagsLabel" >Tags</InputLabel>
                                     <Select
+                                        error={error.errorTags}
                                         labelId="tagsLabel"
                                         id="tagsLabelId"
                                         name="tagsLabelId"
@@ -93,6 +108,7 @@ export default function AddNewIdea(props) {
                                 <FormControl fullWidth>
                                     <InputLabel id="monthsLabel" >Month</InputLabel>
                                     <Select
+                                        error={error.errorMonth}
                                         labelId="monthsLabel"
                                         id="monthsLabelId"
                                         name="monthsLabelId"
