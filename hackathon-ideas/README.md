@@ -30,7 +30,6 @@ Follow below mentioned steps to BUILD this application as production ready
 2. Builds the app for production to the `build` folder.
 3. It correctly bundles App in production mode and optimizes the build for the best performance.
 4. Your app is ready to be deployed!
-5. You can also run this application as production ready app by saying `npm run start:prod`
 
 ## Future prospect
 
